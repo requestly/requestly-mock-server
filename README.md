@@ -18,3 +18,7 @@
 - Collection of mocks (nested)
 
 
+
+V0
+- Minimal Implementation of current mock server
+- Editing mocks allowed
