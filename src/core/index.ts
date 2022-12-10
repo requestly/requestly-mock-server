@@ -3,7 +3,14 @@ import MockProcessor from "./mockProcessor";
 import MockSelector from "./mockSelector";
 
 export const handleMockEndpoint = async (req: any): Promise<MockServerResponse> => {
-    const endpoint = req.path.slice(1);
+    // Stripping front slash. Eg: /users/123/ -> users/123/
+    let endpoint = req.path.slice(1);
+
+    // Stripping end slash. Eg: users/123/ -> users/123
+    if(endpoint.slice(-1) === "/") {
+        endpoint = endpoint.slice(0, -1);
+    }
+
     const method  = req.method as RequestMethod;
     const queryParams = req.query || {};
 
