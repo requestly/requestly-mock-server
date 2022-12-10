@@ -1,6 +1,6 @@
 import { Mock } from "../types/mock";
 
-class IStorageService {
+class IConfigFetcher {
 
     /**
      * 
@@ -8,7 +8,7 @@ class IStorageService {
      * @param kwargs Contains extra val required for storage fetching. Eg. uid in case of firebaseStorageService
      * @returns Return the Mock definition
      */
-    getMock = (id: string, kwargs?: any): Mock|null => {
+    getMock = (id: string, kwargs?: any): Mock | null => {
         return null
     }
     
@@ -30,4 +30,4 @@ class IStorageService {
     }
 }
 
-export default IStorageService;
+export default IConfigFetcher;

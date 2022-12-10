@@ -1,39 +1,23 @@
-import { Mode } from "../types";
-import firebaseStorageService from "./firebaseStorageService";
-import IStorageService from "./storageServiceInterface";
+import IConfigFetcher from "../interfaces/configFetcherInterface";
 
-class StorageService implements IStorageService {
-    mode ?: Mode|null = null;
+class StorageService {
+    configFetcher ?: IConfigFetcher|null = null;
 
-    constructor(mode ?: Mode ) {
-        this.mode = mode;
+    constructor(configFetcher ?: IConfigFetcher ) {
+        this.configFetcher = configFetcher;
     }
 
     // TODO: This should be set when starting the mock server
-    setMode = (mode: Mode) => {
-        this.mode = mode;
+    setConfigFetcher = (configFetcher: IConfigFetcher) => {
+        this.configFetcher = configFetcher;
     }
 
     getMockSelectorMap = (kwargs ?: any): any => {
-        switch(this.mode) {
-            case Mode.FIREBASE: {
-                return firebaseStorageService.getMockSelectorMap(kwargs);
-            }
-            default: {
-                return null
-            }
-        }
+        return this.configFetcher?.getMockSelectorMap(kwargs);
     };
 
     getMock = (id: string, kwargs?: any) => {
-        switch(this.mode) {
-            case Mode.FIREBASE: {
-                return firebaseStorageService.getMock(id, kwargs);
-            }
-            default: {
-                return null
-            }
-        }
+        return this.configFetcher?.getMock(id, kwargs);
     }
 }
 

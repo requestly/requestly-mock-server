@@ -1,3 +1,4 @@
+import IConfigFetcher from "../interfaces/configFetcherInterface";
 import { MockServerResponse, RequestMethod } from "../types";
 import MockProcessor from "./mockProcessor";
 import MockSelector from "./mockSelector";

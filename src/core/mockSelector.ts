@@ -6,7 +6,7 @@ import urlMatcher from "./utils/urlMatcher";
 
 class MockSelector {
     // Selects and return the first mock which matches the current endpoint
-    static selectMock = (endpoint: string, method: RequestMethod): Mock | null=> {
+    static selectMock = (endpoint: string, method: RequestMethod): Mock | null | undefined=> {
         console.log("MockSelector", endpoint, method)
 
         const mockSelectorMap: any = storageService.getMockSelectorMap() || {};

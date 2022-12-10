@@ -11,7 +11,7 @@ export const dummyMock1: Mock = {
             id: "1",
             desc: "Mock 1 Response 1",
             latency: 5000,
-            statusCode: 200,
+            statusCode: 404,
             headers: [
                 {
                     key: "foo",

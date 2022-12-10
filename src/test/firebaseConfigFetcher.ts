@@ -1,13 +1,9 @@
 import { dummyMock1, dummyMock2, getSelectorMap } from "../dummy/mock1";
-import IStorageService from "./storageServiceInterface";
+import IConfigFetcher from "../interfaces/configFetcherInterface";
 
 
 // TODO: Fetch from Firestore and return
-class FirebaseStorageService implements IStorageService {
-    constructor() {
-        // TODO init
-    }
-
+class FirebaseConfigFetcher implements IConfigFetcher {
     getMockSelectorMap = (kwargs?: any) => {
         return getSelectorMap();
     };
@@ -24,5 +20,5 @@ class FirebaseStorageService implements IStorageService {
     }
 }
 
-const firebaseStorageService = new FirebaseStorageService();
-export default firebaseStorageService;
+const firebaseConfigFetcher = new FirebaseConfigFetcher();
+export default firebaseConfigFetcher;
