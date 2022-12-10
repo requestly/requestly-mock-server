@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const mock1_1 = require("../dummy/mock1");
+const mock1_1 = require("./dummy/mock1");
 // TODO: Fetch from Firestore and return
 class FirebaseConfigFetcher {
     constructor() {

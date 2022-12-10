@@ -1,4 +1,4 @@
-import { dummyMock1, dummyMock2, getSelectorMap } from "../dummy/mock1";
+import { dummyMock1, dummyMock2, getSelectorMap } from "./dummy/mock1";
 import IConfigFetcher from "../interfaces/configFetcherInterface";
 
 

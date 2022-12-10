@@ -25,6 +25,7 @@ const setupMockServer = (configFetcher) => {
         console.debug("[Debug] Final Mock Response", mockResponse);
         return res.status(mockResponse.statusCode).set(mockResponse.headers).end(mockResponse.body);
     }));
+    return app;
 };
 exports.setupMockServer = setupMockServer;
 const startMockServer = (configFetcher) => {

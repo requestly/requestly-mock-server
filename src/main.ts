@@ -15,6 +15,8 @@ export const setupMockServer = (configFetcher: IConfigFetcher): any => {
         console.debug("[Debug] Final Mock Response", mockResponse);
         return res.status(mockResponse.statusCode).set(mockResponse.headers).end(mockResponse.body);
     });
+
+    return app;
 }
 
 
