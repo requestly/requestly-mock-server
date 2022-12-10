@@ -12,11 +12,11 @@ class StorageService {
         this.configFetcher = configFetcher;
     }
 
-    getMockSelectorMap = (kwargs ?: any): any => {
+    getMockSelectorMap = async (kwargs ?: any): Promise<any> => {
         return this.configFetcher?.getMockSelectorMap(kwargs);
     };
 
-    getMock = (id: string, kwargs?: any) => {
+    getMock = async (id: string, kwargs?: any): Promise<any> => {
         return this.configFetcher?.getMock(id, kwargs);
     }
 }

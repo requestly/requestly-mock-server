@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -10,19 +19,19 @@ class MockSelector {
 }
 _a = MockSelector;
 // Selects and return the first mock which matches the current endpoint
-MockSelector.selectMock = (endpoint, method) => {
+MockSelector.selectMock = (endpoint, method) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("MockSelector", endpoint, method);
-    const mockSelectorMap = storageService_1.default.getMockSelectorMap() || {};
+    const mockSelectorMap = (yield storageService_1.default.getMockSelectorMap()) || {};
     let mockId = null;
     mockId = Object.keys(mockSelectorMap).find((elem) => {
         return _a.compareSelector(mockSelectorMap[elem], endpoint, method);
     });
     if (mockId) {
-        const mockData = storageService_1.default.getMock(mockId);
+        const mockData = yield storageService_1.default.getMock(mockId);
         return mockData;
     }
     return null;
-};
+});
 // Return whether the endpoint matches the selector for a mock or not
 MockSelector.compareSelector = (selector, endpoint, method) => {
     const methodMatched = selector.method === method;

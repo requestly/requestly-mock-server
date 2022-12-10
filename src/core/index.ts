@@ -7,7 +7,7 @@ export const handleMockEndpoint = async (req: any): Promise<MockServerResponse> 
     const endpoint = req.path.slice(1);
     const method  = req.method as RequestMethod;
     
-    const mockData = MockSelector.selectMock(endpoint, method);
+    const mockData = await MockSelector.selectMock(endpoint, method);
 
     if(mockData) {
         console.debug("[Debug] Mock Selected", mockData);

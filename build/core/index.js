@@ -18,7 +18,7 @@ const mockSelector_1 = __importDefault(require("./mockSelector"));
 const handleMockEndpoint = (req) => __awaiter(void 0, void 0, void 0, function* () {
     const endpoint = req.path.slice(1);
     const method = req.method;
-    const mockData = mockSelector_1.default.selectMock(endpoint, method);
+    const mockData = yield mockSelector_1.default.selectMock(endpoint, method);
     if (mockData) {
         console.debug("[Debug] Mock Selected", mockData);
         const mockResponse = yield mockProcessor_1.default.process(mockData, endpoint, method);
