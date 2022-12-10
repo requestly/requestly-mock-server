@@ -1,11 +1,11 @@
 {
   "name": "requestly-mock-server",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "- Methods: GET, POST, PUT, OPTIONS - Description - Endpoint (can be full path) (/api/v1/users) - Multiple Responses     - Shuffle Response     - Sequential Response     - Rules in Response - Status (Any status code 2xx, 4xx) - Latency - Body     - Templating     - Faker js - Headers",
   "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build && node build/index.js",
+    "start": "npm run build && node build/test/index.js",
     "start:dev": "npx nodemon",
     "build": "rimraf ./build && tsc"
   },
@@ -21,5 +21,8 @@
   },
   "dependencies": {
     "express": "^4.18.2"
-  }
+  },
+  "files": [
+    "build"
+  ]
 }
