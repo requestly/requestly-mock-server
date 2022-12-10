@@ -5,18 +5,22 @@ import IConfigFetcher from "./interfaces/configFetcherInterface";
 import storageService from "./services/storageService";
 import { MockServerResponse, Mode, RequestMethod } from "./types";
 
-export const startMockServer = (configFetcher: IConfigFetcher) => {
+export const setupMockServer = (configFetcher: IConfigFetcher): any => {
     initStorageService(configFetcher);
 
     const app = express();
-    const port = 3000;
     app.all(/\/(.+)/, async (req, res) => {
         console.log(req.path);
         const mockResponse: MockServerResponse = await handleMockEndpoint(req);
         console.debug("[Debug] Final Mock Response", mockResponse);
         return res.status(mockResponse.statusCode).set(mockResponse.headers).end(mockResponse.body);
     });
-      
+}
+
+
+export const startMockServer = (configFetcher: IConfigFetcher) => {
+    const app = setupMockServer(configFetcher);
+    const port = 3000;
     app.listen(port, () => {
         console.log(`Mock Server Listening on port ${port}`);
     })
