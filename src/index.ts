@@ -1,5 +1,6 @@
-import { startMockServer } from "./main";
+import { setupMockServer, startMockServer } from "./main";
 
 export {
-    startMockServer
+    startMockServer,
+    setupMockServer,
 };
