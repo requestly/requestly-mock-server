@@ -19,17 +19,19 @@ class MockSelector {
 }
 _a = MockSelector;
 // Selects and return the first mock which matches the current endpoint
-MockSelector.selectMock = (endpoint, method) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("MockSelector", endpoint, method);
-    const mockSelectorMap = (yield storageService_1.default.getMockSelectorMap()) || {};
+MockSelector.selectMock = (endpoint, method, kwargs) => __awaiter(void 0, void 0, void 0, function* () {
+    console.debug("[MockSelector]", endpoint, method, kwargs);
+    const mockSelectorMap = (yield storageService_1.default.getMockSelectorMap(kwargs)) || {};
     let mockId = null;
     mockId = Object.keys(mockSelectorMap).find((elem) => {
         return _a.compareSelector(mockSelectorMap[elem], endpoint, method);
     });
     if (mockId) {
-        const mockData = yield storageService_1.default.getMock(mockId);
+        console.debug(`[Debug][mockSelector] Mock Selected ${mockId}`);
+        const mockData = yield storageService_1.default.getMock(mockId, kwargs);
         return mockData;
     }
+    console.debug(`[Debug][mockSelector] No Mock Selected`);
     return null;
 });
 // Return whether the endpoint matches the selector for a mock or not

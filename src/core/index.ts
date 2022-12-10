@@ -1,4 +1,3 @@
-import IConfigFetcher from "../interfaces/configFetcherInterface";
 import { MockServerResponse, RequestMethod } from "../types";
 import MockProcessor from "./mockProcessor";
 import MockSelector from "./mockSelector";
@@ -6,11 +5,16 @@ import MockSelector from "./mockSelector";
 export const handleMockEndpoint = async (req: any): Promise<MockServerResponse> => {
     const endpoint = req.path.slice(1);
     const method  = req.method as RequestMethod;
-    
-    const mockData = await MockSelector.selectMock(endpoint, method);
+    const queryParams = req.query || {};
+
+    const kwargs = {
+        queryParams: queryParams
+    }
+
+    const mockData = await MockSelector.selectMock(endpoint, method, kwargs);
 
     if(mockData) {
-        console.debug("[Debug] Mock Selected", mockData);
+        console.debug("[Debug] Mock Selected with data", mockData);
         const mockResponse: MockServerResponse = await MockProcessor.process(mockData, endpoint, method)
         return mockResponse;
     }

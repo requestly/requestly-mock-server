@@ -11,6 +11,7 @@ export const setupMockServer = (configFetcher: IConfigFetcher): any => {
     const app = express();
     app.all(/\/(.+)/, async (req, res) => {
         console.log(req.path);
+        console.log(req.query);
         const mockResponse: MockServerResponse = await handleMockEndpoint(req);
         console.debug("[Debug] Final Mock Response", mockResponse);
         return res.status(mockResponse.statusCode).set(mockResponse.headers).end(mockResponse.body);

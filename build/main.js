@@ -21,6 +21,7 @@ const setupMockServer = (configFetcher) => {
     const app = (0, express_1.default)();
     app.all(/\/(.+)/, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(req.path);
+        console.log(req.query);
         const mockResponse = yield (0, core_1.handleMockEndpoint)(req);
         console.debug("[Debug] Final Mock Response", mockResponse);
         return res.status(mockResponse.statusCode).set(mockResponse.headers).end(mockResponse.body);

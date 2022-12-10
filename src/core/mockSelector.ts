@@ -6,10 +6,10 @@ import urlMatcher from "./utils/urlMatcher";
 
 class MockSelector {
     // Selects and return the first mock which matches the current endpoint
-    static selectMock = async (endpoint: string, method: RequestMethod): Promise<Mock | null | undefined>=> {
-        console.log("MockSelector", endpoint, method)
+    static selectMock = async (endpoint: string, method: RequestMethod, kwargs: any): Promise<Mock | null | undefined>=> {
+        console.debug("[MockSelector]", endpoint, method, kwargs)
 
-        const mockSelectorMap: any = await storageService.getMockSelectorMap() || {};
+        const mockSelectorMap: any = await storageService.getMockSelectorMap(kwargs) || {};
         let mockId = null;
 
         mockId = Object.keys(mockSelectorMap).find((elem) => {
@@ -17,9 +17,12 @@ class MockSelector {
         })
     
         if(mockId) {
-            const mockData = await storageService.getMock(mockId);
+            console.debug(`[Debug][mockSelector] Mock Selected ${mockId}`);
+            const mockData = await storageService.getMock(mockId, kwargs);
             return mockData;
         }
+        
+        console.debug(`[Debug][mockSelector] No Mock Selected`);
 
         return null;
     }
