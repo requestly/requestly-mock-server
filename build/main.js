@@ -16,13 +16,15 @@ exports.startMockServer = exports.setupMockServer = void 0;
 const express_1 = __importDefault(require("express"));
 const core_1 = require("./core");
 const storageService_1 = __importDefault(require("./services/storageService"));
-const setupMockServer = (configFetcher) => {
+const setupMockServer = (configFetcher, pathPrefix = "") => {
     initStorageService(configFetcher);
     const app = (0, express_1.default)();
-    app.all(/\/(.+)/, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // pathPrefix to handle /mockv2 prefix in cloud functions
+    const regex = new RegExp(`${pathPrefix}\/(.+)`);
+    app.all(regex, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log(req.path);
         console.log(req.query);
-        const mockResponse = yield (0, core_1.handleMockEndpoint)(req);
+        const mockResponse = yield (0, core_1.handleMockEndpoint)(req, pathPrefix);
         console.debug("[Debug] Final Mock Response", mockResponse);
         return res.status(mockResponse.statusCode).set(mockResponse.headers).end(mockResponse.body);
     }));
@@ -30,7 +32,7 @@ const setupMockServer = (configFetcher) => {
 };
 exports.setupMockServer = setupMockServer;
 const startMockServer = (configFetcher) => {
-    const app = (0, exports.setupMockServer)(configFetcher);
+    const app = (0, exports.setupMockServer)(configFetcher, "");
     const port = 3000;
     app.listen(port, () => {
         console.log(`Mock Server Listening on port ${port}`);

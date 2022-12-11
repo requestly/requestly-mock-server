@@ -15,9 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleMockEndpoint = void 0;
 const mockProcessor_1 = __importDefault(require("./mockProcessor"));
 const mockSelector_1 = __importDefault(require("./mockSelector"));
-const handleMockEndpoint = (req) => __awaiter(void 0, void 0, void 0, function* () {
+const handleMockEndpoint = (req, pathPrefix) => __awaiter(void 0, void 0, void 0, function* () {
+    let endpoint = req.path;
+    // Stripping URL prefix
+    if (endpoint.indexOf(pathPrefix) === 0) {
+        endpoint = endpoint.slice(pathPrefix.length);
+    }
     // Stripping front slash. Eg: /users/123/ -> users/123/
-    let endpoint = req.path.slice(1);
+    endpoint = endpoint.slice(1);
     // Stripping end slash. Eg: users/123/ -> users/123
     if (endpoint.slice(-1) === "/") {
         endpoint = endpoint.slice(0, -1);
