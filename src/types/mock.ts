@@ -1,13 +1,17 @@
 import { RequestMethod } from ".";
 
 // TODO: Convert into classes later on
-export interface Mock {
+export interface Mock extends MockMetadata {
+    responses: Response[] // Right now we are keeping only 1 response
+}
+
+// Useful when fetching list of mocks. Saves network bandwith
+export interface MockMetadata {
     id : string
     name?: string
     desc ?: string
     method: RequestMethod
     endpoint: string
-    responses: Response[] // Right now we are keeping only 1 response
     ownerId?: string
     createdTs?: string
     updatedTs?: string

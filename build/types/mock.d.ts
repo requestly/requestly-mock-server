@@ -1,11 +1,13 @@
 import { RequestMethod } from ".";
-export interface Mock {
+export interface Mock extends MockMetadata {
+    responses: Response[];
+}
+export interface MockMetadata {
     id: string;
     name?: string;
     desc?: string;
     method: RequestMethod;
     endpoint: string;
-    responses: Response[];
     ownerId?: string;
     createdTs?: string;
     updatedTs?: string;
