@@ -3,10 +3,14 @@ import { RequestMethod } from ".";
 // TODO: Convert into classes later on
 export interface Mock {
     id : string
-    desc ?: String
+    name?: string
+    desc ?: string
     method: RequestMethod
     endpoint: string
     responses: Response[] // Right now we are keeping only 1 response
+    ownerId?: string
+    createdTs?: string
+    updatedTs?: string
 }
 
 export interface Response {
@@ -14,12 +18,7 @@ export interface Response {
     desc ?: string
     latency ?: number
     statusCode: number // TODO: Change this to list of acceptable status codes
-    headers ?: Header[]
+    headers: {[key: string]: string}
     body: string
     // rules: []
-}
-
-export interface Header {
-    key: string
-    value: string
 }

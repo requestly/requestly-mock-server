@@ -39,10 +39,9 @@ MockProcessor.renderStatusCode = (responseTemplate) => {
 // TODO: Pass extra params here required for rendering
 // TODO: Do rendering of header here
 MockProcessor.renderHeaders = (responseTemplate) => {
-    var _b;
     const headers = {};
-    (_b = responseTemplate.headers) === null || _b === void 0 ? void 0 : _b.map(({ key, value }) => {
-        headers[key] = value;
+    Object.keys(responseTemplate.headers).map(key => {
+        headers[key] = responseTemplate.headers[key];
     });
     return headers;
 };

@@ -31,8 +31,8 @@ class MockProcessor {
     // TODO: Do rendering of header here
     static renderHeaders = (responseTemplate: Response) => {
         const headers: any = {};
-        responseTemplate.headers?.map(({key, value}) => {
-            headers[key] = value;
+        Object.keys(responseTemplate.headers).map(key => {
+            headers[key] = responseTemplate.headers[key];
         })
         return headers;
     }

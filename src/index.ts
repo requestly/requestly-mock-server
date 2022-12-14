@@ -1,6 +1,6 @@
 import IConfigFetcher from "./interfaces/configFetcherInterface";
 import { setupMockServer, startMockServer } from "./main";
-import { Mock as MockSchema, Response as MockResponseSchema, Header as MockHeaderSchema } from "./types/mock";
+import { Mock as MockSchema, Response as MockResponseSchema } from "./types/mock";
 
 export {
     startMockServer,
@@ -8,5 +8,4 @@ export {
     IConfigFetcher,
     MockSchema,
     MockResponseSchema,
-    MockHeaderSchema,
 };

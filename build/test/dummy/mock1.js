@@ -11,18 +11,12 @@ exports.dummyMock1 = {
         {
             id: "1",
             desc: "Mock 1 Response 1",
-            latency: 5000,
+            latency: 1000,
             statusCode: 404,
-            headers: [
-                {
-                    key: "foo",
-                    value: "bar",
-                },
-                {
-                    key: "content-type",
-                    value: "application/json",
-                }
-            ],
+            headers: {
+                "foo": "bar",
+                "content-type": "application/json"
+            },
             body: "{\"Hello\":\"There\",\"mockId\":\"1\"}"
         }
     ]
@@ -38,16 +32,10 @@ exports.dummyMock2 = {
             desc: "Mock 2 Response 1",
             latency: 0,
             statusCode: 200,
-            headers: [
-                {
-                    key: "foo",
-                    value: "bar",
-                },
-                {
-                    key: "content-type",
-                    value: "application/json",
-                }
-            ],
+            headers: {
+                "foo": "bar",
+                "content-type": "application/json"
+            },
             body: "{\"Hello\":\"There\",\"mockId\":\"2\"}"
         }
     ]

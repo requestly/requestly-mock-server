@@ -1,20 +1,22 @@
 import { RequestMethod } from ".";
 export interface Mock {
     id: string;
-    desc?: String;
+    name?: string;
+    desc?: string;
     method: RequestMethod;
     endpoint: string;
     responses: Response[];
+    ownerId?: string;
+    createdTs?: string;
+    updatedTs?: string;
 }
 export interface Response {
     id: string;
     desc?: string;
     latency?: number;
     statusCode: number;
-    headers?: Header[];
+    headers: {
+        [key: string]: string;
+    };
     body: string;
-}
-export interface Header {
-    key: string;
-    value: string;
 }
