@@ -5,11 +5,6 @@ export interface Mock extends MockMetadata {
     responses: Response[] // Right now we are keeping only 1 response
 }
 
-export enum MockType {
-    API = "API",
-    FILE = "FILE"
-}
-
 // Useful when fetching list of mocks. Saves network bandwith
 export interface MockMetadata {
     id : string
@@ -20,7 +15,6 @@ export interface MockMetadata {
     ownerId?: string
     createdTs?: string
     updatedTs?: string
-    type?: MockType
 }
 
 export interface Response {
