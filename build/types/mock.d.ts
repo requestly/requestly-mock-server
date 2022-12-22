@@ -21,4 +21,5 @@ export interface Response {
         [key: string]: string;
     };
     body: string;
+    filepath?: string;
 }
