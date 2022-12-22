@@ -24,6 +24,6 @@ export interface Response {
     statusCode: number // TODO: Change this to list of acceptable status codes
     headers: {[key: string]: string}
     body: string
-    filepath?: string,
+    filePath?: string,
     // rules: []
 }
