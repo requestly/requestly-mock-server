@@ -11,14 +11,6 @@ export const setupMockServer = (configFetcher: IConfigFetcher, pathPrefix = ""):
 
     const app = express();
 
-    app.use(cors({
-        origin: true,
-        exposedHeaders: "*",
-        credentials: true,
-        preflightContinue: true,
-        optionsSuccessStatus: 200,
-    }));
-
     app.use((_, res, next) => {
         res.set({
             "cache-control": "no-store",
@@ -27,11 +19,14 @@ export const setupMockServer = (configFetcher: IConfigFetcher, pathPrefix = ""):
         next();
     });
 
-    // ends the options requests without sending anything
-    const optionsRegex = new RegExp(`${pathPrefix}\/(.+)`);
-    app.options(optionsRegex, (_, res) => {
-        res.end();
-    });
+    app.use(cors({
+        origin: true,
+        exposedHeaders: "*",
+        methods: "*",
+        credentials: true,
+        preflightContinue: false,
+        optionsSuccessStatus: 200,
+    }));
 
     // pathPrefix to handle /mockv2 prefix in cloud functions
     const regex = new RegExp(`${pathPrefix}\/(.+)`);
