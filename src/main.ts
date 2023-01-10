@@ -1,4 +1,6 @@
 import express from "express";
+import cors from "cors";
+
 import { handleMockEndpoint } from "./core";
 import IConfigFetcher from "./interfaces/configFetcherInterface";
 import storageService from "./services/storageService";
@@ -8,6 +10,28 @@ export const setupMockServer = (configFetcher: IConfigFetcher, pathPrefix = ""):
     initStorageService(configFetcher);
 
     const app = express();
+
+    app.use(cors({
+        origin: true,
+        exposedHeaders: "*",
+        credentials: true,
+        preflightContinue: true,
+        optionsSuccessStatus: 200,
+    }));
+
+    app.use((_, res, next) => {
+        res.set({
+            "cache-control": "no-store",
+            "X-Robots-Tag": "noindex",
+        });
+        next();
+    });
+
+    // ends the options requests without sending anything
+    const optionsRegex = new RegExp(`${pathPrefix}\/(.+)`);
+    app.options(optionsRegex, (_, res) => {
+        res.end();
+    });
 
     // pathPrefix to handle /mockv2 prefix in cloud functions
     const regex = new RegExp(`${pathPrefix}\/(.+)`);
