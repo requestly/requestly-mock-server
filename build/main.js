@@ -20,13 +20,6 @@ const storageService_1 = __importDefault(require("./services/storageService"));
 const setupMockServer = (configFetcher, pathPrefix = "") => {
     initStorageService(configFetcher);
     const app = (0, express_1.default)();
-    app.use((0, cors_1.default)({
-        origin: true,
-        exposedHeaders: "*",
-        credentials: true,
-        preflightContinue: true,
-        optionsSuccessStatus: 200,
-    }));
     app.use((_, res, next) => {
         res.set({
             "cache-control": "no-store",
@@ -34,11 +27,14 @@ const setupMockServer = (configFetcher, pathPrefix = "") => {
         });
         next();
     });
-    // ends the options requests without sending anything
-    const optionsRegex = new RegExp(`${pathPrefix}\/(.+)`);
-    app.options(optionsRegex, (_, res) => {
-        res.end();
-    });
+    app.use((0, cors_1.default)({
+        origin: true,
+        exposedHeaders: "*",
+        methods: "*",
+        credentials: true,
+        preflightContinue: false,
+        optionsSuccessStatus: 200,
+    }));
     // pathPrefix to handle /mockv2 prefix in cloud functions
     const regex = new RegExp(`${pathPrefix}\/(.+)`);
     app.all(regex, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
