@@ -1,43 +1,48 @@
+import { Request } from "express";
 import { MockServerResponse, RequestMethod } from "../types";
 import MockProcessor from "./mockProcessor";
 import MockSelector from "./mockSelector";
 
-export const handleMockEndpoint = async (req: any, pathPrefix: string): Promise<MockServerResponse> => {
-    let endpoint = req.path;
+class MockServerHandler {
+    static handleEndpoint = async (req: Request): Promise<MockServerResponse> => {
+        let endpoint = req.path;
+        const method  = req.method as RequestMethod;
+        const queryParams = req.query || {};
 
-    // Stripping URL prefix
-    if(endpoint.indexOf(pathPrefix) === 0) {
-        endpoint = endpoint.slice(pathPrefix.length);
+        endpoint = MockServerHandler.cleanupEndpoint(endpoint);
+
+        const kwargs = {
+            queryParams: queryParams
+        }
+
+        const mockData = await MockSelector.selectMock(endpoint, method, kwargs);
+
+        if(mockData) {
+            console.debug("[Debug] Mock Selected with data", mockData);
+            const mockResponse: MockServerResponse = await MockProcessor.process(mockData, endpoint, method)
+            return mockResponse;
+        }
+
+        console.debug("[Debug] No Mock Selected");
+        const notFoundResponse: MockServerResponse = {
+            statusCode: 404,
+            headers: {},
+            body: "Mock Not Found",
+        }
+        return notFoundResponse;
     }
 
-    // Stripping front slash. Eg: /users/123/ -> users/123/
-    endpoint = endpoint.slice(1);
+    static cleanupEndpoint = (endpoint: string): string => {
+        // Stripping front slash. Eg: /users/123/ -> users/123/
+        endpoint = endpoint.slice(1);
 
-    // Stripping end slash. Eg: users/123/ -> users/123
-    if(endpoint.slice(-1) === "/") {
-        endpoint = endpoint.slice(0, -1);
+        // Stripping end slash. Eg: users/123/ -> users/123
+        if(endpoint.slice(-1) === "/") {
+            endpoint = endpoint.slice(0, -1);
+        }
+
+        return endpoint
     }
-
-    const method  = req.method as RequestMethod;
-    const queryParams = req.query || {};
-
-    const kwargs = {
-        queryParams: queryParams
-    }
-
-    const mockData = await MockSelector.selectMock(endpoint, method, kwargs);
-
-    if(mockData) {
-        console.debug("[Debug] Mock Selected with data", mockData);
-        const mockResponse: MockServerResponse = await MockProcessor.process(mockData, endpoint, method)
-        return mockResponse;
-    }
-
-    console.debug("[Debug] No Mock Selected");
-    const notFoundResponse: MockServerResponse = {
-        statusCode: 404,
-        headers: {},
-        body: "Mock Not Found",
-    }
-    return notFoundResponse;
 }
+
+export default MockServerHandler;
