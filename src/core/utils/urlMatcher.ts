@@ -1,3 +1,6 @@
+// @ts-ignore
+import pathToRegexp from "path-to-regexp";
+
 /**
  * Common method that gets called
  * - selecting mock
@@ -12,13 +15,29 @@ const urlMatcher = (pattern: string, url: string): any => {
         params: {} // Populate this with variable from request url
     }
     
-    // Right now we are doing only equality checks
-    // TODO: Support regex, :param also
-    if(pattern === url) {
+    let keys: any[] =[];
+    const regexp = pathToRegexp(pattern, keys);
+    console.log(`regexp: ${regexp}`);
+    console.log("keys: ", keys);
+    if(regexp.test(url)) {
+        const matches = regexp.exec(url);
+        console.log("MATCHED results: ", matches);
+        result.params = convertMatchKeysToDict(keys, matches);
         result.success = true;
     }
 
+    console.log("urlMatcher result: ", result);
     return result;
+}
+
+const convertMatchKeysToDict = (keys: any[] = [], result: any) => {
+    const params: Record<string, string>= {};
+    keys.map((key: Record<string, string>, i: number) => {
+        console.log(key, i);
+        params[key.name] = result[i+1];
+        console.log(params);
+    })
+    return params;
 }
 
 export default urlMatcher;
