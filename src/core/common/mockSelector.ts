@@ -1,7 +1,7 @@
-import storageService from "../services/storageService";
-import { RequestMethod } from "../types";
-import { Mock } from "../types/mock";
-import urlMatcher from "./utils/urlMatcher";
+import storageService from "../../services/storageService";
+import { RequestMethod } from "../../types";
+import { Mock } from "../../types/mock";
+import pathMatcher from "../utils/pathMatcher";
 
 
 class MockSelector {
@@ -30,7 +30,7 @@ class MockSelector {
     // Return whether the endpoint matches the selector for a mock or not
     static compareSelector = (selector: any, endpoint: string, method: RequestMethod): Boolean => {
         const methodMatched = selector.method === method;
-        const urlMatched = urlMatcher(selector.endpoint, endpoint).success || false;
+        const urlMatched = pathMatcher(selector.endpoint, endpoint).success || false;
         
         if(methodMatched && urlMatched) {
             return true;

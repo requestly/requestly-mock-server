@@ -1,10 +1,10 @@
-import { MockServerResponse, RequestMethod } from "../types";
-import { Mock, Response } from "../types/mock";
-import urlMatcher from "./utils/urlMatcher";
+import { MockServerResponse, RequestMethod } from "../../types";
+import { Mock, Response } from "../../types/mock";
+import pathMatcher from "../utils/pathMatcher";
 
 class MockProcessor {
     static process = async (mockData: Mock, endpoint: string, method: RequestMethod): Promise<MockServerResponse> => {
-        const urlParams = urlMatcher(mockData.endpoint, endpoint).params || {}
+        const urlParams = pathMatcher(mockData.endpoint, endpoint).params || {}
         return this.renderMockServerResponse(mockData); 
     }
 

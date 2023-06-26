@@ -1,4 +1,4 @@
-import { startMockServer } from "../main";
+import MockServer from "../core/server";
 import firebaseConfigFetcher from "./firebaseConfigFetcher";
 
-startMockServer(firebaseConfigFetcher);
+new MockServer(3000, firebaseConfigFetcher, "/mocksv2").start();

@@ -5,7 +5,7 @@ export const dummyMock1: Mock = {
     id: "1",
     desc: "Mock 1",
     method: RequestMethod.GET,
-    endpoint: "users",
+    endpoint: "abcd/:userId/:name",
     responses: [
         {
             id: "1",
@@ -24,7 +24,7 @@ export const dummyMock1: Mock = {
 export const dummyMock2: Mock = {
     id: "2",
     desc: "Mock 2",
-    method: RequestMethod.POST,
+    method: RequestMethod.GET,
     endpoint: "users2",
     responses: [
         {
