@@ -16,7 +16,7 @@ export const dummyMock1: Mock = {
                 "foo": "bar",
                 "content-type": "application/json"
             },
-            body: "{\"Hello\":\"There\",\"mockId\":\"1\"}"
+            body: "{\"Hello\":\"There\",\"mockId\":\"1\"} {{urlParam 'userId'}} {{urlParam 'name'}} {{method}} {{statusCode}}"
         }
     ]
 }

@@ -19,7 +19,7 @@ class MockServerHandler {
 
         if(mockData) {
             console.debug("[Debug] Mock Selected with data", mockData);
-            const mockResponse: MockServerResponse = await MockProcessor.process(mockData, endpoint, method)
+            const mockResponse: MockServerResponse = await new MockProcessor(mockData, endpoint, method).process()
             return mockResponse;
         }
 

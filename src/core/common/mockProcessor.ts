@@ -1,18 +1,50 @@
-import { MockServerResponse, RequestMethod } from "../../types";
+import Handlebars from "handlebars";
+
+import { MockContextParams, MockServerResponse, RequestMethod } from "../../types";
 import { Mock, Response } from "../../types/mock";
 import pathMatcher from "../utils/pathMatcher";
+import { renderTemplate } from "../utils/templating";
 
 class MockProcessor {
-    static process = async (mockData: Mock, endpoint: string, method: RequestMethod): Promise<MockServerResponse> => {
-        const urlParams = pathMatcher(mockData.endpoint, endpoint).params || {}
-        return this.renderMockServerResponse(mockData); 
+    mockContextParams!: MockContextParams
+    mockData: Mock;
+    endpoint: string;
+    method: RequestMethod;
+    
+    constructor(mockData: Mock, endpoint: string, method: RequestMethod) {
+        this.mockData = mockData;
+        this.endpoint = endpoint;
+        this.method = method;
+
+        this.mockContextParams = this.prepareMockContextParams(mockData, endpoint, method);
+    }
+    
+    prepareMockContextParams = (mockData: Mock, endpoint: string, method: RequestMethod): MockContextParams => {
+        const params: MockContextParams = {
+            urlParams: pathMatcher(mockData.endpoint, endpoint).params || {},
+            method: method,
+            statusCode: 200,
+        }
+
+        return params;
     }
 
-    static renderMockServerResponse = async (mockData: Mock): Promise<MockServerResponse> => {
+    process = async (): Promise<MockServerResponse> => {
+        const responseTemplate: Response = this.selectResponseTemplate();
+        
+        // Update statusCode as it depends on the selected responseTemplate
+        this.mockContextParams.statusCode = responseTemplate.statusCode;
+        
+        return this.renderResponse(responseTemplate); 
+    }
+
+    selectResponseTemplate = (): Response => {
         // TODO: Right now we select only first response.
         // In future this needs to be selected on the basis of rules
-        const responseTemplate: Response = mockData.responses[0]
-        
+         return this.mockData.responses[0]
+    }
+
+    renderResponse = async (responseTemplate: Response): Promise<MockServerResponse> => {
         const mockServerResponse: MockServerResponse = {
             statusCode: this.renderStatusCode(responseTemplate),
             headers: this.renderHeaders(responseTemplate),
@@ -23,13 +55,13 @@ class MockProcessor {
         return mockServerResponse;
     }
 
-    static renderStatusCode = (responseTemplate: Response) => {
+    renderStatusCode = (responseTemplate: Response) => {
         return responseTemplate.statusCode;
     }
 
     // TODO: Pass extra params here required for rendering
     // TODO: Do rendering of header here
-    static renderHeaders = (responseTemplate: Response) => {
+    renderHeaders = (responseTemplate: Response) => {
         const headers: any = {};
         Object.keys(responseTemplate.headers).map(key => {
             headers[key] = responseTemplate.headers[key];
@@ -39,15 +71,14 @@ class MockProcessor {
     
     // TODO: Pass extra params here required for rendering
     // TODO: Do template rendering here
-    static renderBody = (responseTemplate: Response) => {
-        let finalBody = null;
-        finalBody = responseTemplate.body;
-        return finalBody;
+    renderBody = (responseTemplate: Response) => {
+        let bodyTemplate: string = responseTemplate.body;
+        return renderTemplate(bodyTemplate, this.mockContextParams);
     }
 
     // Time in ms
     // TODO: Write logic for delay here
-    static addDelay = async (delay: number = 0) => {
+    addDelay = async (delay: number = 0) => {
         console.debug(`[Debug] Adding delay of ${delay}`);
         return new Promise(resolve => setTimeout(resolve, delay));
     }

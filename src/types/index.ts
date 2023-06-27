@@ -17,3 +17,10 @@ export interface MockServerResponse {
     statusCode: number,
     headers: { [key: string]: string }
 }
+
+
+export interface MockContextParams {
+    urlParams: { [key: string]: string },
+    method: RequestMethod,
+    statusCode?: number,
+}
