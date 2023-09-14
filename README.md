@@ -2,7 +2,18 @@
 
 This Repo contains the core express server [@requestly/mock-server](https://www.npmjs.com/package/@requestly/mock-server) package which powers Requestly's Cloud Mock Server. 
 
-## Use with firebase-functions
+## Development
+### Install Dependencies
+``` sh
+npm i
+```
+
+### Start Server
+``` sh
+npm start:dev
+```
+
+## Usage with firebase-functions
 
 ### Install
 ``` sh
