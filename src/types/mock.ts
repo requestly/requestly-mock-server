@@ -15,6 +15,7 @@ export interface MockMetadata {
     ownerId?: string
     createdTs?: string
     updatedTs?: string
+    password?: string
 }
 
 export interface Response {

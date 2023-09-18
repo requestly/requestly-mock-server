@@ -1,3 +1,5 @@
+import { HttpStatusCode } from "../enums/mockServerResponse";
+
 export enum RequestMethod {
     GET = "GET",
     POST = "POST",
@@ -14,6 +16,6 @@ export enum Mode {
 
 export interface MockServerResponse {
     body: string,
-    statusCode: number,
+    statusCode: HttpStatusCode,
     headers: { [key: string]: string }
 }

@@ -1,4 +1,4 @@
-import { dummyMock1, dummyMock2, getSelectorMap } from "./dummy/mock1";
+import { dummyMock1, dummyMock2, dummyMock3, getSelectorMap } from "./dummy/mock1";
 import IConfigFetcher from "../interfaces/configFetcherInterface";
 
 
@@ -14,6 +14,9 @@ class FirebaseConfigFetcher implements IConfigFetcher {
         }
         else if(id === "2") {
             return dummyMock2;
+        }
+        else if(id === "3") {
+            return dummyMock3;
         }
 
         return null;

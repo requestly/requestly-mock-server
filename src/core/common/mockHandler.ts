@@ -2,12 +2,16 @@ import { Request } from "express";
 import { MockServerResponse, RequestMethod } from "../../types";
 import MockProcessor from "./mockProcessor";
 import MockSelector from "./mockSelector";
+import { getServerMockResponse } from "../utils/mockServerReponseHelper";
+import { HttpStatusCode } from "../../enums/mockServerResponse";
+import { X_PASSWORD } from "../../constants/requestHeader";
 
 class MockServerHandler {
     static handleEndpoint = async (req: Request): Promise<MockServerResponse> => {
         let endpoint = req.path;
         const method  = req.method as RequestMethod;
         const queryParams = req.query || {};
+        const password = req.header(X_PASSWORD);
 
         endpoint = MockServerHandler.cleanupEndpoint(endpoint);
 
@@ -19,17 +23,12 @@ class MockServerHandler {
 
         if(mockData) {
             console.debug("[Debug] Mock Selected with data", mockData);
-            const mockResponse: MockServerResponse = await MockProcessor.process(mockData, endpoint, method)
+            const mockResponse: MockServerResponse = await MockProcessor.process(mockData, { endpoint, method, password })
             return mockResponse;
         }
 
         console.debug("[Debug] No Mock Selected");
-        const notFoundResponse: MockServerResponse = {
-            statusCode: 404,
-            headers: {},
-            body: "Mock Not Found",
-        }
-        return notFoundResponse;
+        return getServerMockResponse(HttpStatusCode.NOT_FOUND);
     }
 
     static cleanupEndpoint = (endpoint: string): string => {
