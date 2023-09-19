@@ -4,14 +4,13 @@ import MockProcessor from "./mockProcessor";
 import MockSelector from "./mockSelector";
 import { getServerMockResponse } from "../utils/mockServerReponseHelper";
 import { HttpStatusCode } from "../../enums/mockServerResponse";
-import { X_PASSWORD } from "../../constants/requestHeader";
+import { X_PASSWORD } from "../../constants/queryParams";
 
 class MockServerHandler {
     static handleEndpoint = async (req: Request): Promise<MockServerResponse> => {
         let endpoint = req.path;
         const method  = req.method as RequestMethod;
         const queryParams = req.query || {};
-        const password = req.header(X_PASSWORD);
 
         endpoint = MockServerHandler.cleanupEndpoint(endpoint);
 
@@ -23,7 +22,14 @@ class MockServerHandler {
 
         if(mockData) {
             console.debug("[Debug] Mock Selected with data", mockData);
-            const mockResponse: MockServerResponse = await MockProcessor.process(mockData, { endpoint, method, password })
+            const mockResponse: MockServerResponse = await MockProcessor.process(
+                mockData, 
+                { 
+                    endpoint, 
+                    method, 
+                    password: queryParams[X_PASSWORD] as string 
+                }
+            );
             return mockResponse;
         }
 
