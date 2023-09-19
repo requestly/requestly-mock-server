@@ -13,7 +13,7 @@ export const getServerMockResponse = (statusCode: HttpStatusCode): MockServerRes
             return {
                 statusCode,
                 headers: {},
-                body: "Unauthorized, please check if you have access to this route or pass a x-password header",
+                body: "Unauthorized, please check if you have access to this route or append a x-password query-param to your URL",
             }
     }
 }
