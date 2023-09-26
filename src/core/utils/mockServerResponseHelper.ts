@@ -16,4 +16,10 @@ export const getServerMockResponse = (statusCode: HttpStatusCode): MockServerRes
                 body: "Unauthorized, please check if you have access to this route or append a x-password query-param to your URL",
             }
     }
+
+    return {
+        statusCode,
+        headers: {},
+        body: "",
+    };
 }
