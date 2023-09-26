@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "../../enums/mockServerResponse";
 import { MockServerResponse, RequestMethod } from "../../types";
 import { Mock, MockMetadata, Response } from "../../types/mock";
-import { getServerMockResponse } from "../utils/mockServerReponseHelper";
+import { getServerMockResponse } from "../utils/mockServerResponseHelper";
 import pathMatcher from "../utils/pathMatcher";
 
 class MockProcessor {

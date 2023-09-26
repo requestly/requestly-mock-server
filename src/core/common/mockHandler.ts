@@ -2,7 +2,7 @@ import { Request } from "express";
 import { MockServerResponse, RequestMethod } from "../../types";
 import MockProcessor from "./mockProcessor";
 import MockSelector from "./mockSelector";
-import { getServerMockResponse } from "../utils/mockServerReponseHelper";
+import { getServerMockResponse } from "../utils/mockServerResponseHelper";
 import { HttpStatusCode } from "../../enums/mockServerResponse";
 import { X_PASSWORD } from "../../constants/queryParams";
 
