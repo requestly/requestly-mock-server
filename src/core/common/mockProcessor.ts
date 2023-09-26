@@ -1,17 +1,18 @@
 import { HttpStatusCode } from "../../enums/mockServerResponse";
 import { MockServerResponse, RequestMethod } from "../../types";
 import { Mock, MockMetadata, Response } from "../../types/mock";
+import { validatePassword } from "../utils/mockProcessor";
 import { getServerMockResponse } from "../utils/mockServerResponseHelper";
 import pathMatcher from "../utils/pathMatcher";
 
 class MockProcessor {
     static process = async (mockData: Mock, mockMetaData: Partial<MockMetadata>): Promise<MockServerResponse> => {
         const { endpoint, method, password } = mockMetaData;
-        if(mockData.password) {
-            if(!password || mockData.password !== password) {
-                return getServerMockResponse(HttpStatusCode.UNAUTHORIZED);
-            }
+
+        if(!validatePassword(mockData.password, password)) {
+            return getServerMockResponse(HttpStatusCode.UNAUTHORIZED);
         }
+
         const urlParams = pathMatcher(mockData.endpoint, endpoint!).params || {}
         return this.renderMockServerResponse(mockData); 
     }
