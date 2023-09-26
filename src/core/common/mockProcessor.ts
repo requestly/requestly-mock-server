@@ -6,8 +6,8 @@ import { getServerMockResponse } from "../utils/mockServerResponseHelper";
 import pathMatcher from "../utils/pathMatcher";
 
 class MockProcessor {
-    static process = async (mockData: Mock, mockMetaData: Partial<MockMetadata>): Promise<MockServerResponse> => {
-        const { endpoint, method, password } = mockMetaData;
+    static process = async (mockData: Mock, requestContextParams: Partial<MockMetadata>): Promise<MockServerResponse> => {
+        const { endpoint, method, password } = requestContextParams;
 
         if(!validatePassword(mockData.password, password)) {
             return getServerMockResponse(HttpStatusCode.UNAUTHORIZED);
