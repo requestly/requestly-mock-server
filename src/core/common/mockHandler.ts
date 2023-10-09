@@ -4,7 +4,7 @@ import MockProcessor from "./mockProcessor";
 import MockSelector from "./mockSelector";
 import { getServerMockResponse } from "../utils/mockServerResponseHelper";
 import { HttpStatusCode } from "../../enums/mockServerResponse";
-import { X_PASSWORD } from "../../constants/queryParams";
+import { RQ_PASSWORD } from "../../constants/queryParams";
 
 class MockServerHandler {
     static handleEndpoint = async (req: Request): Promise<MockServerResponse> => {
@@ -27,7 +27,7 @@ class MockServerHandler {
                 { 
                     endpoint, 
                     method, 
-                    password: queryParams[X_PASSWORD] as string 
+                    password: queryParams[RQ_PASSWORD] as string 
                 }
             );
             return mockResponse;

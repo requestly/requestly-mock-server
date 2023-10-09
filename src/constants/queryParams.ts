@@ -1,1 +1,1 @@
-export const X_PASSWORD = 'x-password';
+export const RQ_PASSWORD = 'rq_password';
