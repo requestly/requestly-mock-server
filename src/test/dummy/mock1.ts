@@ -41,6 +41,27 @@ export const dummyMock2: Mock = {
     ]
 }
 
+export const dummyMock3: Mock = {
+    id: "3",
+    desc: "Mock 3 : Password protected",
+    method: RequestMethod.GET,
+    endpoint: "users3",
+    password: '1234',
+    responses: [
+        {
+            id: "1",
+            desc: "Mock 3 Response 1",
+            latency: 0,
+            statusCode: 200,
+            headers: {
+                "foo": "bar",
+                "content-type": "application/json",
+            },
+            body: "{\"Hello\":\"There\",\"mockId\":\"3\"}"
+        }
+    ]
+}
+
 export const getSelectorMap = (): any => {
     let selectorMap: any = {}
     selectorMap[dummyMock1.id] = {
@@ -51,6 +72,11 @@ export const getSelectorMap = (): any => {
     selectorMap[dummyMock2.id] = {
         method: dummyMock2.method,
         endpoint: dummyMock2.endpoint
+    };
+
+    selectorMap[dummyMock3.id] = {
+        method: dummyMock3.method,
+        endpoint: dummyMock3.endpoint
     };
 
     return selectorMap;
