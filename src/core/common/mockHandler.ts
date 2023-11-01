@@ -5,6 +5,7 @@ import MockSelector from "./mockSelector";
 import { getServerMockResponse } from "../utils/mockServerResponseHelper";
 import { HttpStatusCode } from "../../enums/mockServerResponse";
 import { RQ_PASSWORD } from "../../constants/queryParams";
+import storageService from "../../services/storageService";
 
 class MockServerHandler {
     static handleEndpoint = async (req: Request): Promise<MockServerResponse> => {
@@ -30,6 +31,7 @@ class MockServerHandler {
                     password: queryParams[RQ_PASSWORD] as string 
                 }
             );
+            storageService.storeLogs({ mockId: mockData.id, createdTs: Date.now(), Har: mockResponse });
             return mockResponse;
         }
 

@@ -5,6 +5,7 @@ import MockServerHandler from "./common/mockHandler";
 import IConfigFetcher from "../interfaces/configFetcherInterface";
 import storageService from "../services/storageService";
 import { MockServerResponse } from "../types";
+import ILogSink from "../interfaces/logSinkInterface";
 
 interface MockServerConfig {
     port: number;
@@ -14,14 +15,16 @@ interface MockServerConfig {
 class MockServer {
     config: MockServerConfig;
     configFetcher: IConfigFetcher;
+    logSink: ILogSink;
     app: Express
 
-    constructor (port: number = 3000, configFetcher: IConfigFetcher, pathPrefix: string = "") {
+    constructor (port: number = 3000, configFetcher: IConfigFetcher, logSink: ILogSink, pathPrefix: string = "") {
         this.config = {
             port,
             pathPrefix
         };
         this.configFetcher = configFetcher;
+        this.logSink = logSink;
 
         this.app = this.setup();
     }
@@ -81,6 +84,7 @@ class MockServer {
 
     initStorageService = () => {
         storageService.setConfigFetcher(this.configFetcher);
+        storageService.setLogSink(this.logSink);
     }
 }
 

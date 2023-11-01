@@ -19,3 +19,9 @@ export interface MockServerResponse {
     statusCode: HttpStatusCode,
     headers: { [key: string]: string }
 }
+
+export interface Log {
+    mockId: string;
+    createdTs: number;
+    Har: any; // checkout nodejs middleware for request to HAR (https://www.npmjs.com/package/@types/har-format)
+}
