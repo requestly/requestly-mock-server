@@ -28,7 +28,7 @@ class StorageService {
         return this.configFetcher?.getMock(id, kwargs);
     }
 
-    storeLogs = async (log: Log): Promise<void> => {
+    storeLog = async (log: Log): Promise<void> => {
         await this.logSink?.store(log);
     }
 }

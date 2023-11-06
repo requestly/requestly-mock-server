@@ -6,6 +6,7 @@ import IConfigFetcher from "../interfaces/configFetcherInterface";
 import storageService from "../services/storageService";
 import { MockServerResponse } from "../types";
 import ILogSink from "../interfaces/logSinkInterface";
+import { HarMiddleware } from "../middlewares/har";
 
 interface MockServerConfig {
     port: number;
@@ -39,6 +40,12 @@ class MockServer {
         this.initStorageService();
 
         const app = express();
+
+        // Use middleware to parse `application/json` and `application/x-www-form-urlencoded` body data
+        app.use(express.json());
+        app.use(express.urlencoded({ extended: true }));
+
+        app.use(HarMiddleware);
     
         app.use((_, res, next) => {
             res.set({
@@ -76,7 +83,9 @@ class MockServer {
     
             const mockResponse: MockServerResponse = await MockServerHandler.handleEndpoint(req);
             console.debug("[Debug] Final Mock Response", mockResponse);
-            return res.status(mockResponse.statusCode).set(mockResponse.headers).end(mockResponse.body);
+
+            res.locals.metadata = mockResponse.metadata;
+            return res.status(mockResponse.statusCode).set(mockResponse.headers).send(mockResponse.body);
         });
     
         return app;

@@ -1,4 +1,6 @@
+import { Har } from "har-format";
 import { HttpStatusCode } from "../enums/mockServerResponse";
+import { DeepPartial } from "./utils";
 
 export enum RequestMethod {
     GET = "GET",
@@ -18,10 +20,10 @@ export interface MockServerResponse {
     body: string,
     statusCode: HttpStatusCode,
     headers: { [key: string]: string }
+    metadata?: { mockId: string }
 }
 
 export interface Log {
     mockId: string;
-    createdTs: number;
-    Har: any; // checkout nodejs middleware for request to HAR (https://www.npmjs.com/package/@types/har-format)
+    Har: DeepPartial<Har>;
 }
