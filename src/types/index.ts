@@ -1,6 +1,5 @@
-import { Har } from "har-format";
+import type { Entry } from "har-format";
 import { HttpStatusCode } from "../enums/mockServerResponse";
-import { DeepPartial } from "./utils";
 
 export enum RequestMethod {
     GET = "GET",
@@ -25,5 +24,5 @@ export interface MockServerResponse {
 
 export interface Log {
     mockId: string;
-    Har: DeepPartial<Har>;
+    HarEntry: Partial<Entry>;
 }

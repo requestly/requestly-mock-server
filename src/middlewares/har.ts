@@ -1,7 +1,6 @@
-import type { Har } from "har-format";
+import type { Entry } from "har-format";
 import { NextFunction, Request, Response } from "express";
 import storageService from "../services/storageService";
-import { DeepPartial } from "../types/utils";
 import { buildHarRequest, buildHarResponse } from "../core/utils/harFormatter";
 
 
@@ -19,20 +18,14 @@ export const HarMiddleware = (req: Request, res: Response, next: NextFunction) =
     };
 
     res.once('finish', () => {
-        const Har: DeepPartial<Har> = {
-            log: {
-                entries: [ 
-                    {
-                        time: Date.now() - requestStartTime.getTime(),
-                        startedDateTime: requestStartTimeStamp,
-                        request: buildHarRequest(req),
-                        response: buildHarResponse(res, { body: responseBody }),
-                    },
-                ]
-            }
-        };
+        const HarEntry: Partial<Entry> = {
+            time: Date.now() - requestStartTime.getTime(),
+            startedDateTime: requestStartTimeStamp,
+            request: buildHarRequest(req),
+            response: buildHarResponse(res, { body: responseBody }),
+        }
 
-        storageService.storeLog({ mockId: res.locals.metadata.mockId, Har, })
+        storageService.storeLog({ mockId: res.locals.metadata.mockId, HarEntry, })
     });
 
     next();
