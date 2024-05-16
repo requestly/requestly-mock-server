@@ -34,7 +34,7 @@ class MockProcessor {
       method: request.method as RequestMethod,
       statusCode: responseTemplate.statusCode,
       urlParams,
-      headers: request.headers as Record<string, string>,
+      headers: request.headers as Record<string, string> || {},
     };
     
     console.log({ contextParams });
