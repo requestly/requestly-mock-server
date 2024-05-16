@@ -5,6 +5,7 @@ import MockServerHandler from "./common/mockHandler";
 import IConfigFetcher from "../interfaces/configFetcherInterface";
 import storageService from "../services/storageService";
 import { MockServerResponse } from "../types";
+import { cleanupPath } from "./utils";
 
 interface MockServerConfig {
     port: number;
@@ -65,10 +66,10 @@ class MockServer {
             if(req.path.indexOf(this.config.pathPrefix) === 0) {
                 console.log(`Stripping pathPrefix: ${this.config.pathPrefix}`);
                 Object.defineProperty(req, 'path', {
-                    value: req.path.slice(this.config.pathPrefix.length),
+                    value: cleanupPath(req.path.slice(this.config.pathPrefix.length)),
                     writable: true
                 });
-                console.log(`Path after stripping prefix: ${req.path}`);
+                console.log(`Path after stripping prefix and cleanup: ${req.path}`);
             }
     
             const mockResponse: MockServerResponse = await MockServerHandler.handleEndpoint(req);
