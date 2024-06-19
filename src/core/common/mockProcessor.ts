@@ -71,8 +71,13 @@ class MockProcessor {
   ) => {
     let finalBody = null;
     let bodyTemplate: string = responseTemplate.body;
-    finalBody = renderTemplate(bodyTemplate, mockContextParams);
-    return finalBody;
+    return bodyTemplate;
+    /**
+     * Commenting Templating for now due to a bug
+     * https://linear.app/requestly/issue/ENGG-1804
+     */
+    // finalBody = renderTemplate(bodyTemplate, mockContextParams);
+    // return finalBody;
   };
 
   // Time in ms
