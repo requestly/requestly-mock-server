@@ -73,7 +73,7 @@ class MockServer {
             }
     
             const mockResponse: MockServerResponse = await MockServerHandler.handleEndpoint(req);
-            console.debug("[Debug] Final Mock Response", mockResponse);
+            // console.debug("[Debug] Final Mock Response", mockResponse);
             return res.status(mockResponse.statusCode).set(mockResponse.headers).end(mockResponse.body);
         });
     

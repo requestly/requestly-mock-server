@@ -19,7 +19,7 @@ class MockServerHandler {
         const mockData = await MockSelector.selectMock(endpoint, method, kwargs);
 
         if(mockData) {
-            console.debug("[Debug] Mock Selected with data", mockData);
+            // console.debug("[Debug] Mock Selected with data", mockData);
             const mockResponse: MockServerResponse = await MockProcessor.process(
                 mockData, 
                 req,
