@@ -5,7 +5,8 @@ import { MockContextParams } from "../../../types/internal";
 
 
 export const renderTemplate = (template: string, params: MockContextParams): string => {
-    const hbsTemplate = compile(template);
+    const sanitizedTemplate = template.replace(/{{\s*}}/g, " ");
+    const hbsTemplate = compile(sanitizedTemplate);
     return hbsTemplate(params, {
         helpers: {
             ...requestHelpers(params)
