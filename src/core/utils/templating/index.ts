@@ -2,7 +2,7 @@ import { compile } from "handlebars";
 
 import requestHelpers from "./helpers/requestHelpers";
 import { MockContextParams } from "../../../types/internal";
-import { wrapUnexpectedTemplateCaptures } from "./helpers/sanitizationHelpers";
+import { wrapUnexpectedTemplateCaptures } from "./utils";
 
 
 export const renderTemplate = (template: string, params: MockContextParams): string => {
