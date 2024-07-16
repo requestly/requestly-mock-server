@@ -1,6 +1,6 @@
 {
   "name": "@requestly/mock-server",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "description": "- Methods: GET, POST, PUT, OPTIONS - Description - Endpoint (can be full path) (/api/v1/users) - Multiple Responses     - Shuffle Response     - Sequential Response     - Rules in Response - Status (Any status code 2xx, 4xx) - Latency - Body     - Templating     - Faker js - Headers",
   "main": "build/index.js",
   "scripts": {
