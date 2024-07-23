@@ -64,20 +64,14 @@ class MockProcessor {
   };
 
   // TODO: Pass extra params here required for rendering
-  // TODO: Do template rendering here
   static renderBody = (
     responseTemplate: Response,
     mockContextParams: MockContextParams
   ) => {
     let finalBody = null;
     let bodyTemplate: string = responseTemplate.body;
-    return bodyTemplate;
-    /**
-     * Commenting Templating for now due to a bug
-     * https://linear.app/requestly/issue/ENGG-1804
-     */
-    // finalBody = renderTemplate(bodyTemplate, mockContextParams);
-    // return finalBody;
+    finalBody = renderTemplate(bodyTemplate, mockContextParams);
+    return finalBody;
   };
 
   // Time in ms
