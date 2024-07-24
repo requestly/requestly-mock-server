@@ -1,13 +1,14 @@
 {
   "name": "@requestly/mock-server",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "- Methods: GET, POST, PUT, OPTIONS - Description - Endpoint (can be full path) (/api/v1/users) - Multiple Responses     - Shuffle Response     - Sequential Response     - Rules in Response - Status (Any status code 2xx, 4xx) - Latency - Body     - Templating     - Faker js - Headers",
   "main": "build/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run build && node build/test/index.js",
     "start:dev": "npx nodemon",
-    "build": "rimraf ./build && tsc"
+    "build": "rimraf ./build && tsc",
+    "prepack": "npm run build"
   },
   "author": "",
   "license": "ISC",

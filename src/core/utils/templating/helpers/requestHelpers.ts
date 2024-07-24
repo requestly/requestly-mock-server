@@ -22,7 +22,7 @@ const requestHelpers = (params: MockContextParams) => {
         return defaultValue
       }
 
-      return params.headers[param] || defaultValue;
+      return params.headers[param?.toLowerCase()] || defaultValue;
     },
   };
   return helpers;
