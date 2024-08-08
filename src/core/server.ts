@@ -18,7 +18,7 @@ class MockServer {
     config: IConfig;
     app: Express
 
-    constructor (port: number = 3000, config: IConfig, pathPrefix: string = "") {
+    constructor (config: IConfig, port: number = 3000, pathPrefix: string = "") {
         this.mockConfig = {
             port,
             pathPrefix
