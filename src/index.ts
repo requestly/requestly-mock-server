@@ -1,12 +1,10 @@
-import IConfigFetcher from "./interfaces/configFetcherInterface";
-import IlogSink from "./interfaces/logSinkInterface";
+import IConfig from "./interfaces/config";
 import MockServer from "./core/server";
 import { Mock as MockSchema, MockMetadata as MockMetadataSchema, Response as MockResponseSchema } from "./types/mock";
 
 export {
     MockServer,
-    IConfigFetcher,
-    IlogSink,
+    IConfig,
     MockSchema,
     MockMetadataSchema,
     MockResponseSchema,

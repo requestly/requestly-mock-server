@@ -1,9 +1,12 @@
 import { dummyMock1, dummyMock2, dummyMock3, dummyMock4, getSelectorMap } from "./dummy/mock1";
-import IConfigFetcher from "../interfaces/configFetcherInterface";
+import IConfig from "../interfaces/config";
+import { Log } from "../types";
+import fs from 'fs';
+
 
 
 // TODO: Fetch from Firestore and return
-class FirebaseConfigFetcher implements IConfigFetcher {
+class TestConfig implements IConfig {
     getMockSelectorMap = (kwargs?: any) => {
         return getSelectorMap();
     };
@@ -24,7 +27,19 @@ class FirebaseConfigFetcher implements IConfigFetcher {
 
         return null;
     }
+
+    // file log store
+    storeLog = async (log: Log): Promise<void> => {
+        const logLine = `${JSON.stringify(log.HarEntry)}\n`;
+        fs.writeFile(`${log.mockId}.log`, logLine, { flag: 'a+' }, (err) => {
+            if(err) {
+                console.log("Error dumping log to file.");
+                throw err;
+            }
+        });
+        Promise.resolve();
+    }
 }
 
-const firebaseConfigFetcher = new FirebaseConfigFetcher();
-export default firebaseConfigFetcher;
+const testConfig = new TestConfig();
+export default testConfig;

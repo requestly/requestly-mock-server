@@ -1,6 +1,7 @@
+import { Log } from "../types";
 import { Mock } from "../types/mock";
 
-class IConfigFetcher {
+class IConfig {
 
     /**
      * 
@@ -28,6 +29,15 @@ class IConfigFetcher {
     getMockSelectorMap = (kwargs?: any): any => {
         return {}
     }
+
+    /**
+     * specify how and where to store logs from mock execution
+     */
+
+    storeLog? = async (log: Log): Promise<void> => {
+        return;
+    }
 }
 
-export default IConfigFetcher;
+
+export default IConfig;
