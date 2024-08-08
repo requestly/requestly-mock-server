@@ -51,18 +51,14 @@ export const getPostData = (req: Request): HarRequest['postData'] => {
 }
 
 export const getHarRequestQueryString = (req: Request): HarRequest['queryString'] => {
-    // req.query is any, which isn't ideal; we need to ensure it's an object with string values
     const queryObject: Request['query'] = req.query;
-  
-    // Convert the object into an array of name-value pairs
+
     const queryString: HarRequest['queryString'] = [];
   
     for (const [name, value] of Object.entries(queryObject)) {
       if (Array.isArray(value)) {
-        // If the value is an array, add an entry for each value
         value.forEach(val => queryString.push({ name, value: val as string }));
       } else {
-        // Otherwise, just add the name-value pair directly
         queryString.push({ name, value: value as string });
       }
     }
@@ -71,6 +67,7 @@ export const getHarRequestQueryString = (req: Request): HarRequest['queryString'
 }
 
 export const buildHarRequest = (req: Request): HarRequest => {
+    const requestData = getPostData(req)
     return {
         method: req.method,
         url: req.url,
@@ -78,14 +75,15 @@ export const buildHarRequest = (req: Request): HarRequest => {
         cookies: [],
         headers: getHarHeaders(req.headers),
         queryString: getHarRequestQueryString(req),
-        postData: getPostData(req),
-        headersSize: -1,
-        bodySize: -1,
+        postData: requestData,
+        headersSize: -1, // not calculating for now
+        bodySize: requestData ? Buffer.byteLength(requestData.text!) : -1,
     }
 };
 
 export const buildHarResponse = (res: Response, metadata?: any): HarResponse => {
     const { body } = metadata;
+    const bodySize = body ? Buffer.byteLength(JSON.stringify(body || {})) : -1;
     return {
         status: res.statusCode,
         statusText: res.statusMessage,
@@ -93,12 +91,12 @@ export const buildHarResponse = (res: Response, metadata?: any): HarResponse => 
         cookies: [],
         headers: getHarHeaders(res.getHeaders()),
         content: {
-            size: Buffer.byteLength(JSON.stringify(body)),
+            size: bodySize, // same as bodySize since serving uncompressed
             mimeType: res.get('Content-Type') || 'application/json',
             text: JSON.stringify(body),
         },
-        redirectURL: '',
-        headersSize: -1,
-        bodySize: -1,
+        redirectURL: '', // todo: implement when we integrate rules to mocks
+        headersSize: -1, // not calculating for now
+        bodySize,
     }
 };

@@ -3,5 +3,5 @@ import firebaseConfigFetcher from "./firebaseConfigFetcher";
 import fileLogSink from "./FileLogSink";
 
 const server = new MockServer(3001, firebaseConfigFetcher, fileLogSink, "/mocksv2");
-console.log(server.app);
+console.debug(server.app);
 server.start();
