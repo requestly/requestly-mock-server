@@ -25,7 +25,10 @@ class MockServerHandler {
                 req,
                 queryParams[RQ_PASSWORD] as string,
             );
-            return mockResponse;
+            return {
+                ...mockResponse,
+                metadata: { mockId: mockData.id },
+            }
         }
 
         console.debug("[Debug] No Mock Selected");
