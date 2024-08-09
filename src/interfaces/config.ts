@@ -1,17 +1,27 @@
+
+
 import { Log } from "../types";
-import { Mock } from "../types/mock";
 
-class IConfig {
+export class ISink {
+    /**
+     * specify how and where to store logs from mock execution
+     */
+    storeLog = (log: Log): Promise<void> => {
+        return Promise.resolve();
+    }
+}
 
+
+import { Mock } from "../types/mock"
+
+export class ISource {
     /**
      * 
      * @param id Mock Id
      * @param kwargs Contains extra val required for storage fetching. Eg. uid in case of firebaseStorageService
      * @returns Return the Mock definition
      */
-    getMock = (id: string, kwargs?: any): Mock | null => {
-        return null
-    }
+    getMock = (id: string, kwargs?: any): Mock | null =>  {return null}
     
 
     /**
@@ -26,18 +36,11 @@ class IConfig {
      *      }
      * }
      */
-    getMockSelectorMap = (kwargs?: any): any => {
-        return {}
-    }
-
-    /**
-     * specify how and where to store logs from mock execution
-     */
-
-    storeLog? = async (log: Log): Promise<void> => {
-        return;
-    }
+    getMockSelectorMap = (kwargs?: any): any => {return {}}
 }
 
 
-export default IConfig;
+export interface IConfig {
+    src: ISource;
+    sink: ISink;
+}

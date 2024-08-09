@@ -1,11 +1,10 @@
-import IConfig from "../interfaces/config";
-import ILogSink from "../interfaces/logSinkInterface";
+import {IConfig} from "../interfaces/config";
 import { Log } from "../types";
 
 class StorageService {
-    config ?: IConfig|null = null;
+    config?: IConfig | null = null;
 
-    constructor(config ?: IConfig, logSink ?: ILogSink) {
+    constructor(config?: IConfig) {
         this.config = config;
     }
 
@@ -15,15 +14,15 @@ class StorageService {
     }
 
     getMockSelectorMap = async (kwargs ?: any): Promise<any> => {
-        return this.config?.getMockSelectorMap(kwargs);
+        return this.config?.src.getMockSelectorMap(kwargs);
     };
 
     getMock = async (id: string, kwargs?: any): Promise<any> => {
-        return this.config?.getMock(id, kwargs);
+        return this.config?.src.getMock(id, kwargs);
     }
 
     storeLog = async (log: Log): Promise<void> => {
-        await this.config?.storeLog?.(log);
+        await this.config?.sink?.storeLog(log);
     }
 }
 

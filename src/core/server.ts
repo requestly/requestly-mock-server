@@ -2,7 +2,7 @@ import express, { Request, Response, Express } from "express";
 import cors from "cors";
 
 import MockServerHandler from "./common/mockHandler";
-import IConfig from "../interfaces/config";
+import { IConfig } from "../interfaces/config";
 import storageService from "../services/storageService";
 import { MockServerResponse } from "../types";
 import { HarMiddleware } from "../middlewares/har";
