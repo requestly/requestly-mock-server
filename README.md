@@ -24,10 +24,10 @@ npm i @requestly/mock-server
 ``` javascript
 import * as functions from 'firebase-functions';
 import { MockServer } from '@requestly/mock-server';
-import firebaseConfigFetcher from '../firebaseConfigFetcher';
+import firebaseConfig from '../firebaseConfig';
 
 const startMockServer = () => {
-  const expressApp = new MockServer(3000, firebaseConfigFetcher, '/api/mockv2').app;
+  const expressApp = new MockServer(3000, firebaseConfig, '/api/mockv2').app;
 
   return functions.runWith({ minInstances: isProdEnv() ? 1 : 0 }).https.onRequest(expressApp);
 };
@@ -36,7 +36,7 @@ export const handleMockRequest = startMockServer();
 ```
 
 ``` javascript
-class FirebaseConfigFetcher implements IConfigFetcher {
+class FirebaseConfig implements IConfig {
     getMockSelectorMap = (kwargs?: any) => {
         /**
         * Fetch and return mockSelectorMap from firestore
@@ -54,10 +54,16 @@ class FirebaseConfigFetcher implements IConfigFetcher {
         * Fetch mock details from firestore
         */
     }
+
+    storeLog? = (log: Log) => {
+        /**
+        * Store log in cloud storages
+        */
+    }
 }
 
-const firebaseConfigFetcher = new FirebaseConfigFetcher();
-export default firebaseConfigFetcher;
+const firebaseConfig = new FirebaseConfig();
+export default firebaseConfig;
 ```
 
 
@@ -69,9 +75,9 @@ export default firebaseConfigFetcher;
 1. Request coming from GET `https://username.requestly.dev/users`
 2. Firebase Function passes the request to @requestly/mock-server
 3. @requestly/mock-server - MockSelector
-   a. Fetches all the available mocks using `IConfigFetcher.getMockSelectorMap()` (Firestore in case of Requestly)
+   a. Fetches all the available mocks using `IConfig.getMockSelectorMap()` (Firestore in case of Requestly)
    b. Select mock if any endpoint+method matches the incoming request (GET /users)
-   c. Fetch Mock using `IConfigFetcher.getMock(mockId)` and pass it to MockProcessor
+   c. Fetch Mock using `IConfig.getMock(mockId)` and pass it to MockProcessor
 4. @requestly/mock-server - MockProcessor
    a. Process Mock - Response Rendering
    b. Return Response

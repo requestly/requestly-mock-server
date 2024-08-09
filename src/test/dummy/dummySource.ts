@@ -1,9 +1,7 @@
-import { dummyMock1, dummyMock2, dummyMock3, dummyMock4, getSelectorMap } from "./dummy/mock1";
-import IConfigFetcher from "../interfaces/configFetcherInterface";
+import { dummyMock1, dummyMock2, dummyMock3, dummyMock4, getSelectorMap } from "./mock1";
+import { ISource } from "../../interfaces/config";
 
-
-// TODO: Fetch from Firestore and return
-class FirebaseConfigFetcher implements IConfigFetcher {
+export class DummySource implements ISource {
     getMockSelectorMap = (kwargs?: any) => {
         return getSelectorMap();
     };
@@ -25,6 +23,3 @@ class FirebaseConfigFetcher implements IConfigFetcher {
         return null;
     }
 }
-
-const firebaseConfigFetcher = new FirebaseConfigFetcher();
-export default firebaseConfigFetcher;
