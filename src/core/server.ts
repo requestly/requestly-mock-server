@@ -85,7 +85,7 @@ class MockServer {
             const mockResponse: MockServerResponse = await MockServerHandler.handleEndpoint(req);
             console.debug("[Debug] Final Mock Response", mockResponse);
 
-            res.locals.metadata = mockResponse.metadata;
+            res.locals.rq_metadata = mockResponse.metadata;
             return res.status(mockResponse.statusCode).set(mockResponse.headers).send(mockResponse.body);
         });
     

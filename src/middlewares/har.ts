@@ -25,7 +25,7 @@ export const HarMiddleware = (req: Request, res: Response, next: NextFunction) =
             response: buildHarResponse(res, { body: responseBody }),
         }
 
-        storageService.storeLog({ mockId: res.locals.metadata.mockId, HarEntry, })
+        storageService.storeLog({ mockId: res.locals.rq_metadata.mockId, HarEntry, })
     });
 
     next();
