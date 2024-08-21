@@ -40,12 +40,7 @@ export class ISource {
 }
 
 
-export class IConfig {
+export interface IConfig {
     src: ISource;
     sink?: ISink;
-
-    constructor(src: ISource, sink?: ISink) {
-        this.src = src;
-        this.sink = sink;
-    }
 }
