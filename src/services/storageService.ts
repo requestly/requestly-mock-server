@@ -1,35 +1,31 @@
-import IConfigFetcher from "../interfaces/configFetcherInterface";
-import ILogSink from "../interfaces/logSinkInterface";
+import {IConfig, ISink, ISource} from "../interfaces/config";
 import { Log } from "../types";
 
 class StorageService {
-    configFetcher ?: IConfigFetcher|null = null;
-    logSink ?: ILogSink|null = null;
+    src: ISource | null = null;
+    sink: ISink | null = null;
 
-    constructor(configFetcher ?: IConfigFetcher, logSink ?: ILogSink) {
-        this.configFetcher = configFetcher;
-        this.logSink = logSink;
+    constructor(config?: IConfig) {
+        this.src = config?.src || null;
+        this.sink = config?.sink || null;
     }
 
     // TODO: This should be set when starting the mock server
-    setConfigFetcher = (configFetcher: IConfigFetcher) => {
-        this.configFetcher = configFetcher;
-    }
-
-    setLogSink(logSink: ILogSink) {
-        this.logSink = logSink;
+    setConfig = (config: IConfig) => {
+        this.src = config.src || null;
+        this.sink = config.sink || null;
     }
 
     getMockSelectorMap = async (kwargs ?: any): Promise<any> => {
-        return this.configFetcher?.getMockSelectorMap(kwargs);
+        return this.src?.getMockSelectorMap(kwargs);
     };
 
     getMock = async (id: string, kwargs?: any): Promise<any> => {
-        return this.configFetcher?.getMock(id, kwargs);
+        return this.src?.getMock(id, kwargs);
     }
 
     storeLog = async (log: Log): Promise<void> => {
-        await this.logSink?.store(log);
+        await this.sink?.storeLog(log);
     }
 }
 

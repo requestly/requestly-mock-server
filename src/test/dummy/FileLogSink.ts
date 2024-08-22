@@ -1,11 +1,11 @@
 import fs from 'fs';
 
-import ILogSink from "../interfaces/logSinkInterface";
-import { Log } from "../types";
+import { ISink } from "../../interfaces/config";
+import { Log } from "../../types";
 
 
-class FileLogSink implements ILogSink {
-    store = async (log: Log): Promise<void> => {
+export class FileLogSink implements ISink {
+    storeLog = async (log: Log): Promise<void> => {
         const logLine = `${JSON.stringify(log.HarEntry)}\n`;
         fs.writeFile(`${log.mockId}.log`, logLine, { flag: 'a+' }, (err) => {
             if(err) {
@@ -13,9 +13,5 @@ class FileLogSink implements ILogSink {
                 throw err;
             }
         });
-        Promise.resolve();
     }
 }
-
-const fileLogSink = new FileLogSink();
-export default fileLogSink;
