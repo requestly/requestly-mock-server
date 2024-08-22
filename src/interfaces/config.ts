@@ -6,7 +6,7 @@ export class ISink {
     /**
      * specify how and where to store logs from mock execution
      */
-    storeLog = (log: Log): Promise<void> => {
+    sendLog = (log: Log): Promise<void> => {
         return Promise.resolve();
     }
 }

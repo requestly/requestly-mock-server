@@ -25,7 +25,7 @@ class StorageService {
     }
 
     storeLog = async (log: Log): Promise<void> => {
-        await this.sink?.storeLog(log);
+        await this.sink?.sendLog(log);
     }
 }
 

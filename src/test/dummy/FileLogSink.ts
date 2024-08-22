@@ -5,7 +5,7 @@ import { Log } from "../../types";
 
 
 export class FileLogSink implements ISink {
-    storeLog = async (log: Log): Promise<void> => {
+    sendLog = async (log: Log): Promise<void> => {
         const logLine = `${JSON.stringify(log.HarEntry)}\n`;
         fs.writeFile(`${log.mockId}.log`, logLine, { flag: 'a+' }, (err) => {
             if(err) {
