@@ -2,35 +2,39 @@ import express, { Request, Response, Express } from "express";
 import cors from "cors";
 
 import MockServerHandler from "./common/mockHandler";
-import { IConfig } from "../interfaces/config";
+import { Config } from "../interfaces/config";
 import storageService from "../services/storageService";
 import { MockServerResponse } from "../types";
 import { HarMiddleware } from "../middlewares/har";
 import { cleanupPath } from "./utils";
 
-interface MockServerConfig {
+interface MockServerOptions {
     port: number;
     pathPrefix: string;
+    storageConfig: Config;
 }
 
+/* To make the constructor options optional except for storageConfig */
+type MockServerConstructorOptions = Pick<MockServerOptions, 'storageConfig'> & Partial<MockServerOptions>;
+
 class MockServer {
-    mockConfig: MockServerConfig;
-    config: IConfig;
+    serverOptions: MockServerOptions;
     app: Express
 
-    constructor (config: IConfig, port: number = 3000, pathPrefix: string = "") {
-        this.mockConfig = {
-            port,
-            pathPrefix
+    constructor (options: MockServerConstructorOptions) {
+        this.serverOptions = {
+            storageConfig: options.storageConfig,
+            port: options.port ?? 3000,
+            pathPrefix: options.pathPrefix ?? "",
         };
-        this.config = config;
+
 
         this.app = this.setup();
     }
 
     start = () => {
-        this.app.listen(this.mockConfig.port, () => {
-            console.log(`Mock Server Listening on port ${this.mockConfig.port}`);
+        this.app.listen(this.serverOptions.port, () => {
+            console.log(`Mock Server Listening on port ${this.serverOptions.port}`);
         })
     }
 
@@ -63,17 +67,17 @@ class MockServer {
         }));
     
         // pathPrefix to handle /mockv2 prefix in cloud functions
-        const regex = new RegExp(`${this.mockConfig.pathPrefix}\/(.+)`);
+        const regex = new RegExp(`${this.serverOptions.pathPrefix}\/(.+)`);
         app.all(regex, async (req: Request, res: Response) => {
             console.log(`Initial Request`);
             console.log(`Path: ${req.path}`);
             console.log(`Query Params: ${JSON.stringify(req.query)}`);
     
             // Stripping URL prefix
-            if(req.path.indexOf(this.mockConfig.pathPrefix) === 0) {
-                console.log(`Stripping pathPrefix: ${this.mockConfig.pathPrefix}`);
+            if(req.path.indexOf(this.serverOptions.pathPrefix) === 0) {
+                console.log(`Stripping pathPrefix: ${this.serverOptions.pathPrefix}`);
                 Object.defineProperty(req, 'path', {
-                    value: cleanupPath(req.path.slice(this.mockConfig.pathPrefix.length)),
+                    value: cleanupPath(req.path.slice(this.serverOptions.pathPrefix.length)),
                     writable: true
                 });
                 console.log(`Path after stripping prefix and cleanup: ${req.path}`);
@@ -90,7 +94,7 @@ class MockServer {
     }
 
     initStorageService = () => {
-        storageService.setConfig(this.config);
+        storageService.setConfig(this.serverOptions.storageConfig);
     }
 }
 

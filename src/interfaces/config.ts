@@ -40,7 +40,7 @@ export class ISource {
 }
 
 
-export interface IConfig {
+export interface Config {
     src: ISource;
     sink?: ISink;
 }
