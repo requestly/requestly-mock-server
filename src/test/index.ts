@@ -1,6 +1,10 @@
 import MockServer from "../core/server";
-import firebaseConfigFetcher from "./firebaseConfigFetcher";
+import TestConfig from "./testConfig";
 
-const server = new MockServer(3001, firebaseConfigFetcher, "/mocksv2");
-console.log(server.app);
+const server = new MockServer({
+    port: 3001,
+    pathPrefix: "/mocksv2",
+    storageConfig: TestConfig
+});
+console.debug(server.app);
 server.start();

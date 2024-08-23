@@ -2,34 +2,39 @@ import express, { Request, Response, Express } from "express";
 import cors from "cors";
 
 import MockServerHandler from "./common/mockHandler";
-import IConfigFetcher from "../interfaces/configFetcherInterface";
+import { Config } from "../interfaces/config";
 import storageService from "../services/storageService";
 import { MockServerResponse } from "../types";
+import { HarMiddleware } from "../middlewares/har";
 import { cleanupPath } from "./utils";
 
-interface MockServerConfig {
+interface MockServerOptions {
     port: number;
     pathPrefix: string;
+    storageConfig: Config;
 }
 
+/* To make the constructor options optional except for storageConfig */
+type MockServerConstructorOptions = Pick<MockServerOptions, 'storageConfig'> & Partial<MockServerOptions>;
+
 class MockServer {
-    config: MockServerConfig;
-    configFetcher: IConfigFetcher;
+    serverOptions: MockServerOptions;
     app: Express
 
-    constructor (port: number = 3000, configFetcher: IConfigFetcher, pathPrefix: string = "") {
-        this.config = {
-            port,
-            pathPrefix
+    constructor (options: MockServerConstructorOptions) {
+        this.serverOptions = {
+            storageConfig: options.storageConfig,
+            port: options.port ?? 3000,
+            pathPrefix: options.pathPrefix ?? "",
         };
-        this.configFetcher = configFetcher;
+
 
         this.app = this.setup();
     }
 
     start = () => {
-        this.app.listen(this.config.port, () => {
-            console.log(`Mock Server Listening on port ${this.config.port}`);
+        this.app.listen(this.serverOptions.port, () => {
+            console.log(`Mock Server Listening on port ${this.serverOptions.port}`);
         })
     }
 
@@ -37,6 +42,12 @@ class MockServer {
         this.initStorageService();
 
         const app = express();
+
+        // Use middleware to parse `application/json` and `application/x-www-form-urlencoded` body data
+        app.use(express.json());
+        app.use(express.urlencoded({ extended: true }));
+
+        app.use(HarMiddleware);
     
         app.use((_, res, next) => {
             res.set({
@@ -56,32 +67,34 @@ class MockServer {
         }));
     
         // pathPrefix to handle /mockv2 prefix in cloud functions
-        const regex = new RegExp(`${this.config.pathPrefix}\/(.+)`);
+        const regex = new RegExp(`${this.serverOptions.pathPrefix}\/(.+)`);
         app.all(regex, async (req: Request, res: Response) => {
             console.log(`Initial Request`);
             console.log(`Path: ${req.path}`);
             console.log(`Query Params: ${JSON.stringify(req.query)}`);
     
             // Stripping URL prefix
-            if(req.path.indexOf(this.config.pathPrefix) === 0) {
-                console.log(`Stripping pathPrefix: ${this.config.pathPrefix}`);
+            if(req.path.indexOf(this.serverOptions.pathPrefix) === 0) {
+                console.log(`Stripping pathPrefix: ${this.serverOptions.pathPrefix}`);
                 Object.defineProperty(req, 'path', {
-                    value: cleanupPath(req.path.slice(this.config.pathPrefix.length)),
+                    value: cleanupPath(req.path.slice(this.serverOptions.pathPrefix.length)),
                     writable: true
                 });
                 console.log(`Path after stripping prefix and cleanup: ${req.path}`);
             }
     
             const mockResponse: MockServerResponse = await MockServerHandler.handleEndpoint(req);
-            // console.debug("[Debug] Final Mock Response", mockResponse);
-            return res.status(mockResponse.statusCode).set(mockResponse.headers).end(mockResponse.body);
+            console.debug("[Debug] Final Mock Response", mockResponse);
+
+            res.locals.rq_metadata = mockResponse.metadata;
+            return res.status(mockResponse.statusCode).set(mockResponse.headers).send(mockResponse.body);
         });
     
         return app;
     }
 
     initStorageService = () => {
-        storageService.setConfigFetcher(this.configFetcher);
+        storageService.setConfig(this.serverOptions.storageConfig);
     }
 }
 
