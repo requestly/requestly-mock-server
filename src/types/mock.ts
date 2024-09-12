@@ -12,7 +12,7 @@ export interface MockMetadata {
   desc?: string;
   method: RequestMethod;
   endpoint: string;
-  ownerId: string;
+  ownerId?: string;
   createdTs?: number;
   updatedTs?: number;
   password?: string;
