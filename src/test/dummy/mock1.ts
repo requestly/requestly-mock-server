@@ -85,7 +85,7 @@ export const dummyMock4: Mock = {
         "x-foo": "bar",
         "content-type": "text/plain",
       },
-      body: `the id is {{urlParam 'id'}} . the url is {{url}} . not passing param to url param {{urlParam}}. Content type is  {{header 'Content-Type'}}. giberish ahead: {{random values}} {{}} {{color: "something"}} {{url 'http://localhost:3000'}} {{urlParam 'id'}} {{ color: "red", display: flex}}`,
+      body: `the id is {{urlParams}} {{urlParams id}} no way to add space right now so {{urlParams 'name'}} . the url is {{url}} . not passing param to url param {{urlParam}}. Content type is  {{header Content-Type}}. giberish ahead: {{random values}} {{}} {{color: "something"}} {{url 'http://localhost:3000'}} {{urlParam 'id'}} {{ color: "red", display: flex}}`,
     },
   ],
 };
