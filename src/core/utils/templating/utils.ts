@@ -9,12 +9,37 @@ function escapeMatchFromHandlebars(match: string) {
 }
 
 export function wrapUnexpectedTemplateCaptures(template: string, allHelpers: Record<string, unknown>) {
-    const helperNames = Object.keys(allHelpers)
+    const helperNames = Object.keys(allHelpers);
+    
     return template.replace(/{{\s*([\s\S]*?)\s*}}/g, (completeMatch, firstMatchedGroup) => {
-        const isMatchEmpty = firstMatchedGroup.trim() === ''; // {{}}
-        const matchStartsWithKnownHelper = helperNames.some(helperName => firstMatchedGroup.includes(helperName));
+        const isMatchEmpty = firstMatchedGroup.trim() === '';
+        if (isMatchEmpty) return escapeMatchFromHandlebars(completeMatch);
 
-        if(isMatchEmpty || !matchStartsWithKnownHelper) return escapeMatchFromHandlebars(completeMatch);
-        else return completeMatch;
+        const [helperName, ...args] = firstMatchedGroup.trim().split(/\s+/);
+
+        // Check if it starts with a known helper
+        const matchStartsWithKnownHelper = helperNames.some(name => helperName === name);
+        if (!matchStartsWithKnownHelper) {
+            return escapeMatchFromHandlebars(completeMatch);
+        }
+
+        // Get helper function and its required parameters
+        const helperFunction = allHelpers[helperName] as Function;
+        const requiredParams = helperFunction.length;
+
+        // Escape if not enough arguments provided
+        if (args.length < requiredParams) {
+            return escapeMatchFromHandlebars(completeMatch);
+        }
+
+        // Wrap unquoted arguments in quotes
+        if (args.length > 0) {
+            const wrappedArgs = args.map((arg:any) => {
+                return /^['"].*['"]$/.test(arg) ? arg : `"${arg}"`;
+            });
+            return `{{${helperName} ${wrappedArgs.join(' ')}}}`;
+        }
+
+        return completeMatch;
     });
 }

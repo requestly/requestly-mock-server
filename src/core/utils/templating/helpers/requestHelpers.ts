@@ -2,7 +2,9 @@ import { MockContextParams } from "../../../../types/internal";
 
 const requestHelpers = (params: MockContextParams) => {
   const helpers = {
-    urlParam: (param: string) => params.urlParams[param],
+    urlParams: (param: string) => {
+      return params.urlParams[param]
+    },
     method: () => params.method,
     statusCode: () => params.statusCode,
     header: (param: string, defaultValue: string = '') => {
