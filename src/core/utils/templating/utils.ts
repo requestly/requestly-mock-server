@@ -14,7 +14,9 @@ export function wrapUnexpectedTemplateCaptures(
 ) {
   const helperNames = Object.keys(allHelpers);
   return template.replace(
-    /{{\s*(\S+?)(?=\s|}})/g, // matches {{ helperName arg1 }} -> helperName
+    // NOTE: breaks when "{{ }}" does not contain helper name and it comes in start 
+    // example: "{id: {{ }}, name: {{ urlParam \'name\' }} }"
+    /{{\s*(\S+)(.*?)}}/g, 
     (completeMatch, firstMatchedGroup) => {
       const matchContainsKnownHelper = helperNames.some((helperName) => {
         return firstMatchedGroup.trim() === helperName;
