@@ -8,32 +8,19 @@ function escapeMatchFromHandlebars(match: string) {
   return match.replace(/({{)/g, "\\$1");
 }
 
-/**
- * Creates regex to match pattern: "helperName 'parameter'"
- */
-function getRegexByHelperName(helperName: string) {
-  return new RegExp(`${helperName}\\b\\s+['"][^'"]*['"]`, "g");
-}
-
-function isMatchesHelperName(helperName: string, templateString: string) {
-  const regex = getRegexByHelperName(helperName);
-  return regex.test(templateString);
-}
-
 export function wrapUnexpectedTemplateCaptures(
   template: string,
   allHelpers: Record<string, unknown>
 ) {
   const helperNames = Object.keys(allHelpers);
   return template.replace(
-    /{{\s*([\s\S]*?)\s*}}/g,
+    /{{\s*(\S+?)(?=\s|}})/g, // matches {{ helperName arg1 }} -> helperName
     (completeMatch, firstMatchedGroup) => {
-      const isMatchEmpty = firstMatchedGroup.trim() === ""; // {{}}
       const matchContainsKnownHelper = helperNames.some((helperName) => {
-        return isMatchesHelperName(helperName, firstMatchedGroup);
+        return firstMatchedGroup.trim() === helperName;
       });
 
-      if (isMatchEmpty || !matchContainsKnownHelper) {
+      if (!matchContainsKnownHelper) {
         return escapeMatchFromHandlebars(completeMatch);
       } else {
         return completeMatch;
