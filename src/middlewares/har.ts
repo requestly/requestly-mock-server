@@ -17,7 +17,7 @@ export const HarMiddleware = (req: Request, res: Response, next: NextFunction) =
         return originalSend.call(this, body);
     };
 
-    res.once('finish', () => {
+    res.once('finish', async () => {
         try {
             const mockId = res.locals.rq_metadata?.mockId;
             // No matching mock (e.g. 404) means there's nothing to attach the log to.
@@ -32,7 +32,9 @@ export const HarMiddleware = (req: Request, res: Response, next: NextFunction) =
                 response: buildHarResponse(res, { body: responseBody }),
             }
 
-            storageService.storeLog({ mockId, HarEntry, })
+            // Await so a rejected storeLog is caught here rather than surfacing
+            // as an unhandled rejection.
+            await storageService.storeLog({ mockId, HarEntry, })
         } catch (error) {
             // Never let a logging failure escape the finish handler — it would
             // surface as an uncaught exception and can crash the process.
