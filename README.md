@@ -1,5 +1,8 @@
 # requestly-mock-server
 
+> **Part of [Requestly HTTP Interceptor](https://github.com/requestly/interceptor)** · See also: [Desktop](https://github.com/requestly/http-interceptor-desktop-app) · [API Client](https://github.com/requestly/requestly) · [Docs](https://docs.requestly.com)
+
+
 This Repo contains the core express server [@requestly/mock-server](https://www.npmjs.com/package/@requestly/mock-server) package which powers Requestly's Cloud Mock Server. 
 
 ## Development
