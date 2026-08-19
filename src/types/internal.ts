@@ -1,3 +1,4 @@
+import { Request } from "har-format";
 import { RequestMethod } from ".";
 
 export interface MockContextParams {
@@ -5,4 +6,5 @@ export interface MockContextParams {
   method: RequestMethod;
   statusCode: number;
   headers: Record<string, string>;
+  data: Request["postData"]
 }

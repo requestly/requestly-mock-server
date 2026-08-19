@@ -7,6 +7,7 @@ import { validatePassword } from "../utils/mockProcessor";
 import { getServerMockResponse } from "../utils/mockServerResponseHelper";
 import pathMatcher from "../utils/pathMatcher";
 import { renderTemplate } from "../utils/templating";
+import { getPostData } from "../utils/harFormatter";
 
 class MockProcessor {
   static process = async (
@@ -35,6 +36,7 @@ class MockProcessor {
       statusCode: responseTemplate.statusCode,
       urlParams,
       headers: request.headers as Record<string, string> || {},
+      data: getPostData(request)
     };
     
     console.log({ contextParams });

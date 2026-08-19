@@ -24,6 +24,20 @@ const requestHelpers = (params: MockContextParams) => {
 
       return params.headers[param?.toLowerCase()] || defaultValue;
     },
+    body: (key: string) => { // passes key
+      const rawData = params.data
+      const defaultResponse = ''
+      if(rawData && rawData.text) {
+        try {
+          // fix-me: handle url encoded params and other operations on body later
+          const parsedData = JSON.parse(rawData.text)
+          return parsedData[key] ?? defaultResponse
+        } catch (error) {
+          /* NOOP */
+        }
+      }
+      return defaultResponse
+    }
   };
   return helpers;
 };
