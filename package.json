@@ -26,8 +26,8 @@
     "@types/har-format": "^1.2.14",
     "cors": "^2.8.5",
     "express": "^4.20.0",
-    "handlebars": "^4.7.9",
-    "path-to-regexp": "^0.1.7"
+    "handlebars": "^4.7.10",
+    "path-to-regexp": "^0.1.13"
   },
   "files": [
     "build"
