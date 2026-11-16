@@ -13,6 +13,15 @@ npm i
 npm start:dev
 ```
 
+### Build and publish
+The repo's `.npmrc` sets `ignore-scripts=true`, so npm lifecycle scripts do not run: `npm i` no longer builds the
+package through `prepublish`, and `npm publish` does not build either. Build explicitly before publishing:
+``` sh
+npm ci
+npm run build
+npm publish
+```
+
 ## Usage with firebase-functions
 
 ### Install
